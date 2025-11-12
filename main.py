@@ -1,20 +1,23 @@
-import time
 from datetime import datetime
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
-from kivy.core.audio import SoundLoader
 from kivy.utils import platform
 
-# أذونات الأندرويد
 if platform == 'android':
     from android.permissions import request_permissions, Permission
+    from jnius import autoclass
     request_permissions([
         Permission.INTERNET,
-        Permission.WRITE_EXTERNAL_STORAGE,
         Permission.READ_EXTERNAL_STORAGE,
+        Permission.WRITE_EXTERNAL_STORAGE,
         Permission.POST_NOTIFICATIONS
     ])
+
+    # للوصول إلى نغمة النظام
+    MediaPlayer = autoclass('android.media.MediaPlayer')
+    RingtoneManager = autoclass('android.media.RingtoneManager')
+    Uri = autoclass('android.net.Uri')
 
 class AlarmLayout(BoxLayout):
     alarm_time = None
@@ -43,9 +46,13 @@ class AlarmLayout(BoxLayout):
     def trigger_alarm(self):
         self.alarm_active = False
         self.ids.status_label.text = "🔔 الوقت حان!"
-        sound = SoundLoader.load('alarm_sound.mp3')
-        if sound:
-            sound.play()
+        if platform == 'android':
+            try:
+                uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                ringtone = RingtoneManager.getRingtone(App.get_running_app()._activity, uri)
+                ringtone.play()
+            except Exception as e:
+                print("Error playing alarm sound:", e)
 
 class AlarmApp(App):
     def build(self):
