@@ -1,0 +1,40 @@
+<AlarmLayout>:
+    orientation: "vertical"
+    padding: 20
+    spacing: 20
+
+    Label:
+        text: "⏰ منبّه Kivy"
+        font_size: "32sp"
+        bold: True
+
+    BoxLayout:
+        spacing: 10
+        Label:
+            text: "الساعة:"
+        TextInput:
+            id: hour_input
+            input_filter: 'int'
+            hint_text: "ساعة"
+            multiline: False
+        Label:
+            text: "الدقيقة:"
+        TextInput:
+            id: minute_input
+            input_filter: 'int'
+            hint_text: "دقيقة"
+            multiline: False
+
+    BoxLayout:
+        spacing: 10
+        Button:
+            text: "تعيين المنبّه"
+            on_press: root.set_alarm()
+        Button:
+            text: "إلغاء"
+            on_press: root.cancel_alarm()
+
+    Label:
+        id: status_label
+        text: "لم يتم تعيين أي منبّه بعد"
+        font_size: "18sp"
