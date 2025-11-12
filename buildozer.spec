@@ -1,0 +1,19 @@
+[app]
+title = AlarmApp
+package.name = alarmapp
+package.domain = org.alarmapp
+source.dir = .
+source.include_exts = py,kv
+version = 1.0
+orientation = portrait
+fullscreen = 0
+android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,POST_NOTIFICATIONS
+requirements = python3,kivy,plyer,android,jnius
+android.api = 33
+android.minapi = 21
+android.archs = arm64-v8a, armeabi-v7a
+android.sdk_path = /opt/android-sdk
+android.ndk_path = /opt/android-ndk
+android.entrypoint = main.py
+android.allow_backup = True
+log_level = 2
